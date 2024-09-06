@@ -8,6 +8,7 @@ import time
 from pydub import AudioSegment
 import tempfile
 import logging
+os.environ['PATH'] += ':/usr/local/bin'
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)

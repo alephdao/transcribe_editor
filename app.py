@@ -185,6 +185,9 @@ def convert_to_ebook(transcript, user_prompt):
     return book_chapter
 
 def main():
+    st.set_page_config(page_title="Audio Transcription & Editing", layout="wide")
+    st.set_option('server.maxUploadSize', 1024)
+    
     st.title("Transcribe Audio & Edit Text!")
 
     st.markdown("""
@@ -206,7 +209,7 @@ def main():
     if transcription_option == "Transcribe Audio":
         # File upload for transcription
         st.header("Transcribe Audio")
-        audio_file = st.file_uploader("Upload an audio file for transcription", 
+        audio_file = st.file_uploader("Upload an audio file for transcription (up to 1 GB)", 
                                       type=["wav", "mp3", "ogg", "flac", "m4a"])
         
         # Language selection dropdown

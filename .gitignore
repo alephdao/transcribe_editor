@@ -1,0 +1,33 @@
+# Virtual environment
+venv/
+env/
+.venv/
+.env/
+
+# Input and output directories
+input/
+output/
+
+# Scripts folder
+scripts/
+
+# Python-related files
+__pycache__/
+*.py[cod]
+*.so
+
+# IDE-specific files
+.vscode/
+.idea/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+*.swp

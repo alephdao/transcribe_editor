@@ -1,0 +1,6 @@
+deepgram-sdk==3.5.1
+openai==1.43.1
+python-dotenv==1.0.1
+streamlit==1.38.0
+tiktoken==0.7.0
+pydub

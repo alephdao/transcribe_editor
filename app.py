@@ -187,6 +187,15 @@ def convert_to_ebook(transcript, user_prompt):
     progress_bar.empty()
     return book_chapter
 
+def split_file(file, chunk_size=200*1024*1024):  # 200MB chunks
+    chunks = []
+    while True:
+        chunk = file.read(chunk_size)
+        if not chunk:
+            break
+        chunks.append(chunk)
+    return chunks
+
 def main():
     st.title("Transcribe Audio & Edit Text!")
 
@@ -209,7 +218,7 @@ def main():
     if transcription_option == "Transcribe Audio":
         # File upload for transcription
         st.header("Transcribe Audio")
-        audio_file = st.file_uploader("Upload an audio file for transcription (up to 1 GB)", 
+        uploaded_file = st.file_uploader("Upload an audio file for transcription (files larger than 200MB will be split)", 
                                       type=["wav", "mp3", "ogg", "flac", "m4a"])
         
         # Language selection dropdown
@@ -219,17 +228,24 @@ def main():
             format_func=lambda x: "English" if x == "en" else "Spanish"
         )
         
-        if audio_file is not None:
-            if st.button("Transcribe Audio"):
-                try:
-                    with st.spinner("Transcribing..."):
-                        transcription = transcribe_audio(audio_file, language)
-                        st.success("Transcription complete!")
-                        st.session_state.transcription = transcription
-                except Exception as e:
-                    st.error(f"An error occurred during transcription: {str(e)}")
-                    logger.exception("Transcription error")
-
+        if uploaded_file is not None:
+            file_size = uploaded_file.size
+            if file_size > 200*1024*1024:  # If file is larger than 200MB
+                st.warning("File is larger than 200MB. It will be split into multiple parts.")
+                chunks = split_file(uploaded_file)
+                for i, chunk in enumerate(chunks):
+                    st.download_button(
+                        label=f"Download Part {i+1}",
+                        data=chunk,
+                        file_name=f"{uploaded_file.name}_part{i+1}",
+                        mime="application/octet-stream"
+                    )
+                st.info("Please download all parts and upload them individually for transcription.")
+            else:
+                # Process the file as normal
+                st.success("File uploaded successfully. Ready for transcription.")
+                # Your transcription code here
+    
     else:  # Upload Existing Transcription
         st.header("Upload Existing Transcription")
         transcription_file = st.file_uploader("Upload a .md or .txt file with your transcription", type=["md", "txt"])

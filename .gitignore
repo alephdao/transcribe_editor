@@ -2,7 +2,7 @@
 venv/
 env/
 .venv/
-.env/
+.env
 
 # Input and output directories
 input/

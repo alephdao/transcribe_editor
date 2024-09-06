@@ -10,6 +10,12 @@ import tempfile
 import logging
 os.environ['PATH'] += ':/usr/local/bin'
 
+# Set page config at the very beginning
+st.set_page_config(page_title="Audio Transcription & Editing", layout="wide")
+
+# Increase file upload size limit to 1 GB (1024 MB)
+st.set_option('server.maxUploadSize', 1024)
+
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -185,9 +191,6 @@ def convert_to_ebook(transcript, user_prompt):
     return book_chapter
 
 def main():
-    st.set_page_config(page_title="Audio Transcription & Editing", layout="wide")
-    st.set_option('server.maxUploadSize', 1024)
-    
     st.title("Transcribe Audio & Edit Text!")
 
     st.markdown("""
